@@ -1,0 +1,5 @@
+
+<li><a href="{% url 'shop:homepage' %}">Home</a></li>
+{% for category in categories %}
+    <li><a href="{% url 'product_list' category.id %}">{{ category.name }}</a></li>
+{% endfor %}
