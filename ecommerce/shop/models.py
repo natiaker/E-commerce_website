@@ -18,7 +18,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     categories = models.ManyToManyField(Category)
     stock = models.IntegerField()
-    # image = models.ImageField(upload_to='')
+    image = models.ImageField(upload_to='products_pictures/', default='default/default-product-image.png', null=True, blank=True)
 
     def __str__(self):
         return self.name
