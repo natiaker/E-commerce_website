@@ -4,16 +4,14 @@
 
 {% block body %}
 
-    <h1 class="m-4">Products</h1>
+    <h1 class="m-2">Products</h1>
 
     <div class="container">
-        <div class="row" style=" margin: 0 auto">
-
-
+        <div class="row">
 
             {% for product in products %}
 
-            <div class="card m-2" style="width: 30%;">
+            <div class="card m-2" style="width: 31%;">
                 {% if product.image %}
                     <img src="{{ product.image.url }}" class="card-img-top mt-3" style="max-height: 300px; width: auto; object-fit: cover" alt="product_img">
                 {% endif %}

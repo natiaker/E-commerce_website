@@ -33,9 +33,6 @@ class Order(models.Model):
     quantity = models.IntegerField()
     order_date = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"Order {self.id} by {self.user.username}"
-
     class Meta:
         db_table = 'order'
 

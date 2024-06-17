@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} Homepage {% endblock %}
+
+
+{% block body %}
+    <div class="container my-4">
+        <form method="post">
+            {% csrf_token %}
+            <h4>Are you sure you want to delete "{{ object }}"?</h4>
+            {{ form }}
+            <input type="submit" value="Confirm" class="btn btn-danger">
+            <a href="{% url 'shop:homepage' %}" class="btn btn-primary">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

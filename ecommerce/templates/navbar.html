@@ -6,28 +6,29 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="width: 100%; display: flex; justify-content: center">
-<!--          <li class="nav-item">-->
-<!--            <a class="nav-link" aria-current="page" href="#">Categories</a>-->
-<!--          </li>-->
 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex justify-content-center align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <svg style="margin-right: 8px" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
-              </svg>
-              Categories
-            </a>
-            <ul class="dropdown-menu">
-            {% for category in product.categories.all %}
-              <li><a class="dropdown-item" href="#">{{ category.name }}</a></li>
-            {% endfor %}
-            </ul>
+              <a class="nav-link dropdown-toggle d-flex justify-content-center align-items-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg style="margin-right: 8px" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                </svg>
+                Categories
+              </a>
+              <ul class="dropdown-menu">
+              {% for category in categories %}
+                <li><a class="dropdown-item" href="?category={{ category.id }}">{{ category.name }}</a></li>
+              {% endfor %}
+              </ul>
           </li>
 
           <li style="margin-left: 10%; margin-right: 10%;">
             <form class="d-flex" role="search">
               <input class="form-control me-2" style="width: 25rem;" type="search" placeholder="Search" aria-label="Search" name="product_query">
-              <button class="btn" style="background-color: black; color: white;" type="submit">Search</button>
+              <button class="btn d-flex align-items-center" style="background-color: black; color: white;" type="submit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+              </button>
             </form>
           </li>
 
@@ -45,15 +46,21 @@
               <svg style="margin-right: 8px"  xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
               </svg>
-              User
+              {{ user|capfirst }}
             </a>
 
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">User Profile</a></li>
-              <li><a class="dropdown-item" href="#">Login</a></li>
-              <li><a class="dropdown-item" href="#">Sign Up</a></li>
+              {% if not user.is_authenticated %}
+              <li><a class="dropdown-item" href="/login/">Login</a></li>
+              <li><a class="dropdown-item" href="{% url 'shop:sign_up' %}">Sign Up</a></li>
+              {% endif %}
+
+              {% if user.is_authenticated %}
+              <li><a class="dropdown-item" href="#">{{ user|capfirst }}'s Profile</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Log Out</a></li>
+              <li><a class="dropdown-item" href="/logout/">Log Out</a></li>
+              {% endif %}
+
             </ul>
           </li>
         </ul>

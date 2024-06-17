@@ -13,6 +13,14 @@ class ProductForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Please enter product name'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Please enter product description'}),
             'price': forms.NumberInput(attrs={'class': 'form-control'}),
-            # 'categories': forms.Select(attrs={'class': 'form-control'}),
             'stock': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
+
+class RegistrationForm(UserCreationForm):
+    email = forms.EmailField(required=False)
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+
