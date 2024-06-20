@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}{{ user }}'s Profile{% endblock %}
+
+{% block body %}
+    <ol style="max-width: 60%">
+        {% for product in products %}
+        <li>
+            <div class="list-group m-2">
+              <a href="{% url 'shop:product_details' product.id %}" class="list-group-item list-group-item-action" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ product.title }}</h5>
+                  <small>{{ product.price }}</small>
+                </div>
+                <p class="mb-1">{{ product.description }}</p>
+<!--                <small> {{ product.quantity }} </small>-->
+              </a>
+            </div>
+        </li>
+        {% endfor %}
+    </ol>
+{% endblock %}

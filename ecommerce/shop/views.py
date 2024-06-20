@@ -1,9 +1,10 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.forms import BaseModelForm
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, CreateView, View, DeleteView, UpdateView
@@ -38,29 +39,41 @@ class ProductDetailsView(DetailView):
     context_object_name = 'product_details'
 
 
-class AddProductView(CreateView):
+class AddProductView(PermissionRequiredMixin, CreateView):
     model = Product
     template_name = 'add_product.html'
     form_class = ProductForm
     success_url = '/'
+    permission_required = 'shop.add_product'
 
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         form.save()
 
         return super().form_valid(form)
 
+    def handle_no_permission(self):
+        return redirect('shop:homepage')
 
-class RemoveProductView(DeleteView):
+
+class RemoveProductView(PermissionRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('shop:homepage')
     template_name = 'confirm_delete.html'
+    permission_required = 'shop.delete_product'
+
+    def handle_no_permission(self):
+        return redirect('shop:homepage')
 
 
-class EditProductView(UpdateView):
+class EditProductView(PermissionRequiredMixin, UpdateView):
     model = Product
     fields = ['name', 'description', 'price', 'categories', 'stock', 'image']
     template_name = 'update_product.html'
     success_url = '/'
+    permission_required = 'shop.change_product'
+
+    def handle_no_permission(self):
+        return redirect('shop:homepage')
 
 
 class SignUpView(CreateView):
@@ -74,9 +87,15 @@ class SignUpView(CreateView):
         return super().form_valid(form)
 
 
-class UserLoginView(LoginView):
+class UserLoginView(UserPassesTestMixin, LoginView):
     template_name = 'registration/login.html'
     success_url = reverse_lazy('shop:homepage')
+
+    def test_func(self):
+        return not self.request.user.is_authenticated
+
+    def handle_no_permission(self) -> HttpResponseRedirect:
+        return redirect('shop:homepage')
 
 
 class UserLogoutView(View):
@@ -85,5 +104,5 @@ class UserLogoutView(View):
         return redirect('shop:login')
 
 
-
-
+class UserProfileView(DetailView):
+    pass

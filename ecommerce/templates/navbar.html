@@ -1,6 +1,10 @@
+{% load static %}
+
 <nav class="navbar navbar-expand-lg" style="background-color: #9DC183; height: 96px; width: 100%">
   <div style="max-width: 1140px; margin: 0 auto; " class="container-fluid">
-      <a class="navbar-brand" href="{% url 'shop:homepage' %}">SHOP</a>
+      <a class="navbar-brand" href="{% url 'shop:homepage' %}">
+        <img src="{% static 'logo.png' %}" class="navbar-brand" style="width: 80px" alt="logo">
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -16,7 +20,7 @@
               </a>
               <ul class="dropdown-menu">
               {% for category in categories %}
-                <li><a class="dropdown-item" href="?category={{ category.id }}">{{ category.name }}</a></li>
+                <li><a class="dropdown-item" href="/?category={{ category.id }}">{{ category.name }}</a></li>
               {% endfor %}
               </ul>
           </li>
@@ -32,14 +36,26 @@
             </form>
           </li>
 
-          <li class="nav-item" style="margin-right: 16px">
-            <a class="nav-link mr-4 d-flex justify-content-center align-items-center" href="#">
+          <li class="nav-item dropdown" style="margin-right: 16px">
+            <a class="nav-link dropdown-toggle d-flex justify-content-center align-items-center position-relative" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
               <svg style="margin-right: 8px"  xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
                 <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"/>
               </svg>
-              <span>Cart</span>
+              <span>Cart
+                {% if cart_items %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {{ total_count }}
+                <span class="visually-hidden">unread messages</span>
+                {% endif %}
+              </span>
+              </span>
+
             </a>
+
+            {% include 'cart.html' %}
+
           </li>
+
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex justify-content-center align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -56,7 +72,10 @@
               {% endif %}
 
               {% if user.is_authenticated %}
-              <li><a class="dropdown-item" href="#">{{ user|capfirst }}'s Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'shop:user_profile' %}">{{ user|capfirst }}'s Profile</a></li>
+                {% if user.is_superuser or perms.shop.add_product %}
+                <li><a class="dropdown-item" href="{% url 'shop:add_product' %}">Add New Product</a></li>
+                {% endif %}
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="/logout/">Log Out</a></li>
               {% endif %}

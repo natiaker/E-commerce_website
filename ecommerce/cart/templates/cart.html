@@ -1,0 +1,36 @@
+<ul class="dropdown-menu dropdown-cart" style="max-height: 500px; overflow: auto">
+    <h5 class="m-2">Your Cart</h5>
+
+    {% for cart_item in cart_items %}
+     <li class="m-2 p-2 border" style="width: 300px">
+          <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
+                    <img src="{{ cart_item.product.image.url }}" style="width: 80px; height: 80px" alt="product_img" />
+                    <div class="mx-2">
+                        <p><strong>{{ cart_item.product.name }}</strong></p>
+                        <p>Price: {{ cart_item.get_total_price }} ₾</p>
+                    </div>
+                </div>
+              <div class="d-flex flex-column align-items-center justify-content-center">
+                  <a href="{% url 'cart:add_to_cart' cart_item.product.id %}" class="btn" style="background-color: #9DC183; color: white;">+</a>
+                  <p class="border p-1 my-1 d-flex align-items-center justify-content-center" style="min-width: 35px;">{{ cart_item.quantity }}</p>
+                  <a href="{% url 'cart:remove_from_cart' cart_item.product.id %}" class="btn btn-danger">-</a>
+              </div>
+          </div>
+     </li>
+
+    {% empty %}
+        <h6 class="text-center" style="width: 300px">Your Cart is Empty</h6>
+    {% endfor %}
+
+    {% if cart_items %}
+    <p class="border p-2 my-1 m-2"><strong>Total Price:</strong>  {{ total_price }} ₾</p>
+    <a href="#" class="btn d-flex justify-content-center align-items-center m-2" style="background-color: black; color: white">
+        <svg style="margin-right: 12px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
+          <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708"/>
+        </svg>
+        Buy
+    </a>
+    {% endif %}
+</ul>
+
