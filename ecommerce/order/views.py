@@ -23,6 +23,7 @@ class OrderPageView(LoginRequiredMixin, CreateView):
         cart = get_object_or_404(Cart, user=self.request.user)
         cart_items = CartItem.objects.filter(cart=cart).all()
 
+        # Check if cart is empty
         if cart_items:
             order = Order.objects.create(
                 user=self.request.user,
@@ -32,6 +33,7 @@ class OrderPageView(LoginRequiredMixin, CreateView):
             messages.error(self.request, 'Cart is empty.')
             return redirect(self.request.META.get('HTTP_REFERER'))
 
+        # Create the order and related order items
         try:
             with transaction.atomic():
                 for item in cart_items:

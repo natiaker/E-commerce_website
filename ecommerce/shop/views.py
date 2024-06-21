@@ -13,9 +13,11 @@ from .forms import ProductForm, RegistrationForm
 from order.models import OrderItem, Order
 
 
+# view for the homepage with product list and search functionality
 class IndexView(TemplateView):
     template_name = 'index.html'
 
+    # filter products based on search query or category
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         query = request.GET.get('product_query')
         category_query = request.GET.get('category')
@@ -27,6 +29,7 @@ class IndexView(TemplateView):
         else:
             products = Product.objects.all().order_by('name')
 
+        # paginate the product list
         paginator = Paginator(products, 9)
         page_number = request.GET.get('page')
         products = paginator.get_page(page_number)
@@ -34,12 +37,14 @@ class IndexView(TemplateView):
         return render(request, self.template_name, {'products': products, 'category_query': category_query, 'product_query': query or ''})
 
 
+# view for displaying product details
 class ProductDetailsView(DetailView):
     model = Product
     template_name = 'product_details.html'
     context_object_name = 'product_details'
 
 
+# view for adding a new product, requires appropriate permissions
 class AddProductView(PermissionRequiredMixin, CreateView):
     model = Product
     template_name = 'add_product.html'
@@ -56,6 +61,7 @@ class AddProductView(PermissionRequiredMixin, CreateView):
         return redirect('shop:homepage')
 
 
+# view for removing a product, requires appropriate permissions
 class RemoveProductView(PermissionRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('shop:homepage')
@@ -66,6 +72,7 @@ class RemoveProductView(PermissionRequiredMixin, DeleteView):
         return redirect('shop:homepage')
 
 
+# view for editing a product, requires appropriate permissions
 class EditProductView(PermissionRequiredMixin, UpdateView):
     model = Product
     fields = ['name', 'description', 'price', 'categories', 'stock', 'image']
@@ -77,6 +84,7 @@ class EditProductView(PermissionRequiredMixin, UpdateView):
         return redirect('shop:homepage')
 
 
+# View for user registration
 class SignUpView(CreateView):
     form_class = RegistrationForm
     template_name = 'registration/sign_up.html'
@@ -88,6 +96,7 @@ class SignUpView(CreateView):
         return super().form_valid(form)
 
 
+# view for user login, only accessible to non-authenticated users
 class UserLoginView(UserPassesTestMixin, LoginView):
     template_name = 'registration/login.html'
     success_url = reverse_lazy('shop:homepage')
@@ -99,13 +108,15 @@ class UserLoginView(UserPassesTestMixin, LoginView):
         return redirect('shop:homepage')
 
 
+# View for user logout
 class UserLogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('shop:login')
 
 
-class UserProfileView(LoginRequiredMixin ,ListView):
+# View for displaying user profile with order history, requires login
+class UserProfileView(LoginRequiredMixin, ListView):
     template_name = 'user_profile.html'
     context_object_name = 'orders'
     login_url = '/login'

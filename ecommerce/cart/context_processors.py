@@ -1,6 +1,7 @@
 from .models import CartItem, Cart
 
 
+# Function to process cart-related data for rendering in templates
 def cart_processor(request):
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(cart__user=request.user)
@@ -12,6 +13,7 @@ def cart_processor(request):
         total_price = 0
         total_count = 0
 
+    # Return a dictionary containing cart-related data to be used in templates
     return {
         'cart_items': cart_items,
         'total_price': total_price,

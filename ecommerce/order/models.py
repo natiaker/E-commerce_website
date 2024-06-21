@@ -8,7 +8,7 @@ class CustomerInfo(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     address = models.TextField()
-    mobile = models.IntegerField()
+    mobile = models.TextField()
 
     class Meta:
         db_table = 'order_form'

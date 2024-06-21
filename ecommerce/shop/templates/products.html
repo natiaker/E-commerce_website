@@ -4,7 +4,6 @@
     <div class="row">
 
         {% for product in products %}
-
         <div class="card m-2" style="width: 31%;">
             {% if product.image %}
                 <img src="{{ product.image.url }}" class="card-img-top mt-3" style="height: 300px; width: auto; object-fit: cover" alt="product_img">

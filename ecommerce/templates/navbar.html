@@ -2,13 +2,16 @@
 
 <nav class="navbar navbar-expand-lg" style="background-color: #9DC183; height: 96px; width: 100%">
   <div style="max-width: 1140px; margin: 0 auto; " class="container-fluid">
+<!--   section: logo -->
       <a class="navbar-brand" href="{% url 'shop:homepage' %}">
         <img src="{% static 'logo.png' %}" class="navbar-brand" style="width: 60px" alt="logo">
       </a>
 
+<!--   section: dropdowns and search bar -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="width: 100%; display: flex; justify-content: center">
 
+<!--          Categories Dropdown -->
           <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle d-flex justify-content-center align-items-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <svg style="margin-right: 8px" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
@@ -23,6 +26,7 @@
               </ul>
           </li>
 
+<!--          search bar -->
           <li style="margin-left: 10%; margin-right: 10%;">
             <form class="d-flex" role="search" action="/">
               <input class="form-control me-2" style="width: 25rem;" type="search" placeholder="Search" aria-label="Search" name="product_query" value="{{ product_query }}">
@@ -34,6 +38,7 @@
             </form>
           </li>
 
+<!--          cart dropdown -->
           <li class="nav-item dropdown" style="margin-right: 16px">
             <a class="nav-link dropdown-toggle d-flex justify-content-center align-items-center position-relative" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
               <svg style="margin-right: 8px"  xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
@@ -48,10 +53,10 @@
                 </span>
               </span>
             </a>
-
             {% include 'cart.html' %}
           </li>
 
+<!--          authentication dropwdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex justify-content-center align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <svg style="margin-right: 8px"  xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
