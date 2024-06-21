@@ -1,6 +1,14 @@
-<ul class="dropdown-menu dropdown-cart" style="max-height: 500px; overflow: auto">
-    <h5 class="m-2">Your Cart</h5>
+{% extends 'base.html' %}
 
+{% block title %} Order Page {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="container mt-4" style="max-width: 640px;">
+    <h1 class="mb-3">Order</h1>
+    {% if cart_items %}
+    <ul class="d-flex" style="list-style-type: none; overflow: auto">
     {% for cart_item in cart_items %}
      <li class="m-2 p-2 border" style="width: 300px">
           <div class="d-flex justify-content-between">
@@ -18,19 +26,20 @@
               </div>
           </div>
      </li>
-
     {% empty %}
         <h6 class="text-center" style="width: 300px">Your Cart is Empty</h6>
     {% endfor %}
-
-    {% if cart_items %}
-    <p class="border p-2 my-1 m-2"><strong>Total Price:</strong>  {{ total_price }} ₾</p>
-    <a href="{% url 'order:order_page' %}" class="btn d-flex justify-content-center align-items-center m-2" style="background-color: black; color: white">
-        <svg style="margin-right: 12px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check-fill" viewBox="0 0 16 16">
-          <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708"/>
-        </svg>
-        Buy
-    </a>
+    </ul>
     {% endif %}
-</ul>
 
+    <form method="post">
+        <h5 class="my-4 p-2 border border-success">Total Price: {{ total_price }} ₾</h5>
+
+        {% csrf_token %}
+
+        {{ form|crispy }}
+
+        <button type="submit" class="btn btn-success mb-4">Finish Order</button>
+    </form>
+</div>
+{% endblock %}

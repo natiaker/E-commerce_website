@@ -1,15 +1,17 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.forms import BaseModelForm
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DetailView, CreateView, View, DeleteView, UpdateView
+from django.views.generic import TemplateView, DetailView, CreateView, View, DeleteView, UpdateView, ListView, RedirectView
 from .models import Product
 from .forms import ProductForm, RegistrationForm
+from order.models import OrderItem, Order
 
 
 class IndexView(TemplateView):
@@ -104,5 +106,10 @@ class UserLogoutView(View):
         return redirect('shop:login')
 
 
-class UserProfileView(DetailView):
-    pass
+class UserProfileView(ListView):
+    template_name = 'user_profile.html'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.kwargs['user_id'])
+

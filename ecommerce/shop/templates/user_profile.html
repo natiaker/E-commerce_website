@@ -3,20 +3,31 @@
 {% block title %}{{ user }}'s Profile{% endblock %}
 
 {% block body %}
-    <ol style="max-width: 60%">
-        {% for product in products %}
-        <li>
-            <div class="list-group m-2">
-              <a href="{% url 'shop:product_details' product.id %}" class="list-group-item list-group-item-action" aria-current="true">
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">{{ product.title }}</h5>
-                  <small>{{ product.price }}</small>
+    <h3 class="m-3">Your Order History</h3>
+    <ol >
+        {% for order in orders %}
+            <li>
+            {% for order_item in order.order_items.all %}
+                <div class="list-group m-2">
+                  <a href="{% url 'shop:product_details' order_item.product.id %}" class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">{{ order_item.product.name }}</h5>
+                      <small><strong>Price:</strong> {{ order_item.product.price }} ₾</small>
+                    </div>
+                    <p class="mb-1"><strong>Order Date:</strong> {{ order.order_date }}</p>
+                    <small><strong>Quantity:</strong> x{{ order_item.quantity }} </small>
+                  </a>
                 </div>
-                <p class="mb-1">{{ product.description }}</p>
-<!--                <small> {{ product.quantity }} </small>-->
-              </a>
-            </div>
-        </li>
-        {% endfor %}
+            {% endfor %}
+            </li>
+            <p class="m-2 mb-4"><strong>Total Price:</strong> {{ order.total_price }} ₾</p>
+            <hr>
+        {% empty %}
+        <div class="text-center">
+            <h4 class="m-3">You have no order history yet.</h4>
+            <h5 class="m-3">Start Shopping <a href="{% url 'shop:homepage' %}">Here</a></h5>
+        </div>
+    {% endfor %}
     </ol>
+
 {% endblock %}

@@ -1,6 +1,4 @@
 from decimal import Decimal
-
-from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -28,17 +26,5 @@ class Product(models.Model):
 
     class Meta:
         db_table = 'product'
-
-
-class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    order_date = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = 'order'
-
-
 
 
