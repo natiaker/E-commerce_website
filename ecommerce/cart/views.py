@@ -12,6 +12,7 @@ class AddToCartView(LoginRequiredMixin, View):
     login_url = '/login'
 
     def post(self, request: HttpRequest, product_id):
+        redirect_url = request.POST.get('redirect_url')
         product = get_object_or_404(Product, id=product_id)
         cart, created = Cart.objects.get_or_create(user=request.user)
 
@@ -36,6 +37,8 @@ class AddToCartView(LoginRequiredMixin, View):
         else:
             messages.error(request, 'Out of stock')
 
+        if redirect_url:
+            return redirect(redirect_url)
         # Redirect to the previous page
         return redirect(request.META.get('HTTP_REFERER'))
 
