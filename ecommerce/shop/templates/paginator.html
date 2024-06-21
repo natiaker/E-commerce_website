@@ -3,10 +3,10 @@
 
     {% if products.has_previous %}
       <li class="page-item">
-        <a class="page-link" href="?page=1" style="color: black;">&laquo; First</a>
+        <a class="page-link" href="?page=1{% if category_query %}&category={{ category_query }}{% endif %}" style="color: black;">&laquo; First</a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="?page={{ products.previous_page_number }}" style="color: black;">Previous</a>
+        <a class="page-link" href="?page={{ products.previous_page_number }}{% if category_query %}&category={{ category_query }}{% endif %}" style="color: black;">Previous</a>
       </li>
     {% else %}
     <li class="page-item disabled">
@@ -24,17 +24,17 @@
           <span class="page-link"  style="background-color: #9DC183; border-color: #9DC183">{{ num }}</span>
         </li>
       {% elif num > products.number|add:-3 and num < products.number|add:3 %}
-        <li class="page-item"><a class="page-link" href="?page={{ num }}" style="color: black">{{ num }}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ num }}{% if category_query %}&category={{ category_query }}{% endif %}" style="color: black">{{ num }}</a></li>
       {% endif %}
     {% endfor %}
 
 
     {% if products.has_next %}
       <li class="page-item">
-        <a class="page-link" href="?page={{products.next_page_number}}" style="color: black;">Next</a>
+        <a class="page-link" href="?page={{products.next_page_number}}{% if category_query %}&category={{ category_query }}{% endif %}" style="color: black;">Next</a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="?page={{products.paginator.num_pages}}" style="color: black;">Last &raquo;</a>
+        <a class="page-link" href="?page={{products.paginator.num_pages}}{% if category_query %}&category={{ category_query }}{% endif %}" style="color: black;">Last &raquo;</a>
       </li>
     {% else %}
       <li class="page-item disabled">

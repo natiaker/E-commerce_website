@@ -1,12 +1,11 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth import logout
-from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.forms import BaseModelForm
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, CreateView, View, DeleteView, UpdateView, ListView, RedirectView
 from .models import Product
@@ -22,17 +21,17 @@ class IndexView(TemplateView):
         category_query = request.GET.get('category')
 
         if query:
-            products = Product.objects.filter(Q(name__icontains=query))
+            products = Product.objects.filter(Q(name__icontains=query)).order_by('name')
         elif category_query:
-            products = Product.objects.filter(categories__id=category_query)
+            products = Product.objects.filter(categories__id=category_query).order_by('name')
         else:
-            products = Product.objects.all()
+            products = Product.objects.all().order_by('name')
 
         paginator = Paginator(products, 9)
         page_number = request.GET.get('page')
         products = paginator.get_page(page_number)
 
-        return render(request, self.template_name, {'products': products})
+        return render(request, self.template_name, {'products': products, 'category_query': category_query, 'product_query': query or ''})
 
 
 class ProductDetailsView(DetailView):
@@ -106,10 +105,11 @@ class UserLogoutView(View):
         return redirect('shop:login')
 
 
-class UserProfileView(ListView):
+class UserProfileView(LoginRequiredMixin ,ListView):
     template_name = 'user_profile.html'
     context_object_name = 'orders'
+    login_url = '/login'
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.kwargs['user_id'])
+        return Order.objects.filter(user=self.request.user).order_by("-order_date")
 

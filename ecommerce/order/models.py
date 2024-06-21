@@ -1,6 +1,6 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import User
-from cart.models import Cart
 from shop.models import Product
 
 
@@ -8,7 +8,7 @@ class CustomerInfo(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     address = models.TextField()
-    mobile = models.CharField(max_length=13)
+    mobile = models.IntegerField()
 
     class Meta:
         db_table = 'order_form'

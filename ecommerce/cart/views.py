@@ -10,7 +10,7 @@ from .models import Product
 class AddToCartView(LoginRequiredMixin, View):
     login_url = '/login'
 
-    def get(self, request: HttpRequest, product_id):
+    def post(self, request: HttpRequest, product_id):
         product = get_object_or_404(Product, id=product_id)
         cart, created = Cart.objects.get_or_create(user=request.user)
 
@@ -35,7 +35,7 @@ class AddToCartView(LoginRequiredMixin, View):
 
 
 class RemoveFromCartView(View):
-    def get(self, request: HttpRequest, product_id):
+    def post(self, request: HttpRequest, product_id):
         product = get_object_or_404(Product, id=product_id)
         cart = Cart.objects.get(user=request.user)
         cart_item = CartItem.objects.filter(cart=cart, product=product).first()

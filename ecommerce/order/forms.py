@@ -11,5 +11,5 @@ class OrderForm(forms.ModelForm):
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Please enter your Firstname'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Please enter your Lastname'}),
             'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Please enter your address'}),
-            'mobile': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. +995123456789'}),
+            'mobile': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'e.g. 555123456'}),
         }
