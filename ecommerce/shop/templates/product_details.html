@@ -48,6 +48,7 @@
                   </div>
                 <p class="card-text"><strong>Stock: </strong> {{ product_details.stock }}</p>
 
+                {% if user.is_authenticated %}
 <!--                add-to-cart and buy buttons-->
                 <div class="row g-0">
                     <form action="{% url 'cart:add_to_cart' product_details.id %}" method="post" >
@@ -71,6 +72,7 @@
                         </button>
                     </form>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
